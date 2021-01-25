@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\PrankCategoryController;
+use App\Http\Controllers\API\PrankIdeaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Must Authenticated Routes
+Route::group(['namespace' => 'API', 'prefix' => 'v1'], function () {
+    // Prank Category Routes
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('', [PrankCategoryController::class, 'index']);
+    });
+
+    // Prank Idea Routes
+    Route::group(['prefix' => 'prank-idea'], function () {
+        Route::get('', [PrankIdeaController::class, 'index']);
+        Route::get('/{prankCategory}', [PrankIdeaController::class, 'category']);
+    });
 });
